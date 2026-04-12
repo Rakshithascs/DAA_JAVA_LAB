@@ -1,0 +1,35 @@
+import java.util.*;
+public class Horspool {
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("enter the text:");
+		String text=sc.nextLine();
+		
+		System.out.println("enter the Pattern:");
+		String pattern=sc.nextLine();
+		
+		int n=text.length(),m=pattern.length();
+		int[] shift=new int[256];
+		for(int i=0;i<256;i++) 
+				shift[i]=m;
+		
+		for(int j=0;j<m-1;j++)
+			shift[pattern.charAt(j)]=m-1-j;
+		int i=m-1;
+		
+		while(i<n) {
+			int k=0;
+			while(k<m && pattern.charAt(m-1-k)==text.charAt(i-k))
+				k++;
+			
+			if(k==m) {
+				System.out.println("pattern found at position:"+(i-m+1));
+				sc.close();
+				return;
+			}
+			i+=shift[text.charAt(i)];
+		}
+		System.out.println("pattern not found");
+		sc.close();
+	}
+}
