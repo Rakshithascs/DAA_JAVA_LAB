@@ -1,0 +1,78 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class MergeSortExp {
+
+    public static void mergeSort(int[] a, int low, int high) {
+        int N = high - low;
+
+        if (N <= 1)
+            return;
+
+        int mid = low + (N / 2);
+
+        mergeSort(a, low, mid);
+        mergeSort(a, mid, high);
+
+        int[] temp = new int[N];
+        int i = low, j = mid;
+
+        for (int k = 0; k < N; k++) {
+            if (i == mid)
+                temp[k] = a[j++];
+            else if (j == high)
+                temp[k] = a[i++];
+            else if (a[j] < a[i])
+                temp[k] = a[j++];
+            else
+                temp[k] = a[i++];
+        }
+
+        // Copy back to original array
+        for (int k = 0; k < N; k++) {
+            a[low + k] = temp[k];
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        Random r = new Random();
+
+        System.out.println("Merge Sort");
+        System.out.print("Enter number of times to run: ");
+        int times = scan.nextInt();
+
+        double totalTime = 0;
+
+        for (int t = 0; t < times; t++) {
+
+            int[] a = new int[10];
+
+            System.out.println("\nRandom Numbers:");
+            for (int i = 0; i < 10; i++) {
+                a[i] = r.nextInt(1000);
+                System.out.print(a[i] + " ");
+            }
+
+            long start = System.nanoTime();
+
+            mergeSort(a, 0, a.length);
+
+            long end = System.nanoTime();
+
+            System.out.println("\nSorted Numbers:");
+            for (int i = 0; i < 10; i++) {
+                System.out.print(a[i] + " ");
+            }
+
+            double duration = (end - start);
+            totalTime += duration;
+
+            System.out.println("\nTime Taken: " + duration + " nanoseconds");
+        }
+
+        System.out.println("\nAverage Time: " + (totalTime / times) + " nanoseconds");
+
+        scan.close();
+    }
+}
